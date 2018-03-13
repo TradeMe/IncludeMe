@@ -1,0 +1,8 @@
+ext.version = "1.0.0"
+ext.group = "nz.co.trademe.includeme"
+ext.scm = 'https://github.com/TradeMe/IncludeMe.git'
+ext.description = 'A Gradle plugin that simplifies working with composite builds'
+
+ext.bintray_version = '1.7.3'
+ext.kotlin_version = '1.2.30'
+ext.agp_version = "3.0.1"
