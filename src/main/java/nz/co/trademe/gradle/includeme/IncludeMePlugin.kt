@@ -20,8 +20,6 @@ class IncludeMePlugin : Plugin<PluginAware> {
             return
         }
 
-        log("Applying plugin to settings")
-
         val projects = findGradleProjects(project).apply {
             log("Found ${this.size} projects to include")
         }
@@ -77,8 +75,6 @@ class IncludeMePlugin : Plugin<PluginAware> {
         val searchPaths = findSearchPaths(project)
         val whitelistedProjects = findWhitelistedProjects(project)
 
-        log("whitelisted projects: $whitelistedProjects")
-
         val gradleProjects = searchPaths.map {
             it.listFiles()
                     .filter { it.isGradleProject() }
@@ -90,7 +86,6 @@ class IncludeMePlugin : Plugin<PluginAware> {
                     }
         }.flatten()
 
-        log("$gradleProjects")
         return gradleProjects
     }
 
