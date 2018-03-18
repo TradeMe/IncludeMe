@@ -37,6 +37,11 @@ def pomConfig = {
     }
 }
 
+task sourceJar(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
 publishing.publications {
     Bintray(MavenPublication) {
         from components.java
@@ -44,6 +49,8 @@ publishing.publications {
         groupId project.ext.group
         artifactId getArtifactId()
         version project.ext.version
+
+        artifact sourceJar
 
         pom.withXml {
             def root = asNode()
