@@ -108,7 +108,7 @@ class IncludeMePlugin : Plugin<PluginAware> {
         val parentSearchPath = listOf(settings.projectDirectory.parentFile?.absolutePath)
 
         val declaredSearchPaths = PropertiesHelper.findAllGradleProperties(settings)
-                .map {
+                .mapNotNull {
                     it.getProperty("includeme.searchpaths")
                 }
 
