@@ -7,5 +7,5 @@ val Settings.projectDirectory: File
     get() = rootProject.projectDir
 
 fun File.isGradleProject(): Boolean {
-    return File(absolutePath, "settings.gradle").exists()
+    return File(absolutePath, "settings.gradle").exists() || File(absolutePath, "settings.gradle.kts").exists()
 }
