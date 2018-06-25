@@ -1,4 +1,4 @@
-ext.version = "1.0.2"
+ext.version = "1.0.3"
 ext.group = "nz.co.trademe.includeme"
 ext.scm = 'https://github.com/TradeMe/IncludeMe.git'
 ext.description = 'A Gradle plugin that simplifies working with composite builds'

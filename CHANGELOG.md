@@ -1,6 +1,12 @@
 Change Log
 ==========
  
+Version 1.0.3 *(26-06-2018)*
+----------------------------
+
+  * Adds support for kotlin script settings files
+
+ 
 Version 1.0.2 *(07-06-2018)*
 ----------------------------
 
