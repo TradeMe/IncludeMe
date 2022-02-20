@@ -1,77 +1,91 @@
 apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'signing'
+apply plugin: 'org.jetbrains.dokka'
 
-project.group = project.ext.group
-project.version = project.ext.version
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        // For Android libraries
+        from android.sourceSets.main.java.srcDirs
+        from android.sourceSets.main.kotlin.srcDirs
+    } else {
+        from sourceSets.main.java.srcDirs
+        from sourceSets.main.kotlin.srcDirs
+    }
 
-bintray {
-    user = project.hasProperty("BINTRAY_USERNAME") ? project.property('BINTRAY_USERNAME') : null
-    key = project.hasProperty("BINTRAY_API_KEY") ? project.property('BINTRAY_API_KEY') : null
-    pkg {
-        repo = project.ext.name
-        name = getArtifactId()
-        userOrg = 'trademe'
-        licenses = ['Apache-2.0']
-        vcsUrl = project.ext.scm
-        version {
-            name = project.version
-            desc = project.ext.description
-            released = new Date()
-            vcsTag = project.version
+
+}
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    archiveClassifier.set('javadoc')
+    from dokkaJavadoc.outputDirectory
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives javadocJar
+}
+
+
+afterEvaluate {
+    publishing {
+
+        publications {
+            release(MavenPublication) {
+                groupId project.ext.group
+                artifactId project.ext.repo
+                version project.ext.version
+
+                if (project.plugins.findPlugin("com.android.library")) {
+                    from components.release
+                } else {
+                    from components.java
+                }
+
+                artifact androidSourcesJar
+                artifact javadocJar
+
+                // metadata
+                pom {
+                    name = project.ext.repo
+                    description = 'SDK'
+                    url = project.ext.url
+                    licenses {
+                        license {
+                            name = "MIT License"
+                            url  = "http://www.opensource.org/licenses/mit-license.php"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'sabinmj'
+                            name = 'Sabin'
+                            email = 'sabin.mj@gmail.com'
+                        }
+                        // Add all other devs here...
+                    }
+
+                    // Version control info - if you're using GitHub, follow the
+                    // format as seen here
+                    scm {
+                        connection = project.ext.connection
+                        developerConnection = project.ext.developerConnection
+                        url = project.ext.url
+
+                    }
+                }
+            }
         }
-        publications = ['Bintray']
     }
 }
-
-// Create the pom configuration:
-def pomConfig = {
-    licenses {
-        license {
-            name "MIT License"
-            url "http://www.opensource.org/licenses/mit-license.php"
-            distribution "repo"
-        }
-    }
-    scm {
-        url ext.scm
-    }
+signing {
+    useInMemoryPgpKeys(
+            rootProject.ext["signing.keyId"],
+            rootProject.ext["signing.key"],
+            rootProject.ext["signing.password"],
+    )
+    sign publishing.publications
 }
-
-task sourceJar(type: Jar, dependsOn: 'classes') {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-publishing.publications {
-    Bintray(MavenPublication) {
-        from components.java
-
-        groupId project.ext.group
-        artifactId getArtifactId()
-        version project.ext.version
-
-        artifact sourceJar
-
-        pom.withXml {
-            def root = asNode()
-            root.appendNode('description', project.ext.description)
-            root.appendNode('name', project.ext.name)
-            root.appendNode('url', project.ext.scm)
-            root.children().last() + pomConfig
-        }
-    }
-}
-
-def getArtifactId() {
-    return getArtifactId(project)
-
-}
-
-def getArtifactId(someProject) {
-    if (!someProject.ext.has('artifactId')) {
-        //default artifactId is the project/module name
-        return someProject.getName()
-
-    }
-    return someProject.ext.artifactId
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
