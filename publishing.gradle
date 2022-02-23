@@ -25,6 +25,12 @@ artifacts {
     archives javadocJar
 }
 
+task sourceJar(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+
 
 afterEvaluate {
     publishing {
@@ -32,8 +38,8 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 groupId project.ext.group
-                artifactId project.ext.repo
-                version project.ext.version
+                artifactId ARTIFACT_ID
+                version PUBLISH_VERSION
 
                 if (project.plugins.findPlugin("com.android.library")) {
                     from components.release
@@ -46,7 +52,7 @@ afterEvaluate {
 
                 // metadata
                 pom {
-                    name = project.ext.repo
+                    name = ARTIFACT_ID
                     description = 'SDK'
                     url = project.ext.url
                     licenses {
