@@ -20,7 +20,7 @@ jobs:
           java-version: 11
 
       - name: Release build
-        run: ./gradlew build
+        run: ./gradlew clean build
 
         # Generates other artifacts
       - name: Source jar and dokka

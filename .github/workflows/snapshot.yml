@@ -24,7 +24,7 @@ jobs:
           java-version: 11
       - name: Release build
 
-        run: ./gradlew build
+        run: ./gradlew clean build
       - name: Source jar and dokka
         run: ./gradlew androidSourcesJar javadocJar
       - name: Publish to MavenCentral
