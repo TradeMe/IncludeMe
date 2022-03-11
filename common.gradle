@@ -1,4 +1,4 @@
-ext.version = "1.0.5"
+ext.version = "1.0.4"
 ext.group = "nz.co.trademe.includeme"
 ext.repo = "includeme"
 ext.scm = 'https://github.com/TradeMe/IncludeMe.git'
