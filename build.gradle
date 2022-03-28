@@ -1,20 +1,29 @@
-ext {
-    name = "IncludeMe"
-}
-
-apply from: 'common.gradle'
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
+apply plugin: 'org.jetbrains.dokka'
 
 buildscript {
     apply from: 'common.gradle'
 
     repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
         google()
         jcenter()
     }
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintray_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'io.github.gradle-nexus:publish-plugin:1.1.0'
+        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.6.10'
     }
+}
+
+
+
+apply from: "${rootDir}/publish-root.gradle"
+
+ext {
+    PUBLISH_VERSION = rootVersionName
+    ARTIFACT_ID = "includeme"
 }
 
 apply plugin: 'java-gradle-plugin'
@@ -31,19 +40,18 @@ gradlePlugin {
     }
 }
 
-sourceCompatibility = 1.8
-
 repositories {
     google()
     jcenter()
 }
 
-dependencies {
-    compile gradleApi()
-    compile "com.android.tools.build:gradle:$agp_version"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    testCompile 'junit:junit:4.12'
+dependencies {
+    implementation gradleApi()
+    implementation "com.android.tools.build:gradle:$agp_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    testImplementation'junit:junit:4.12'
 }
 
 
@@ -67,3 +75,4 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
