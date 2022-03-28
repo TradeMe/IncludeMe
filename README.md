@@ -28,7 +28,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'nz.co.trademe.includeme:includeme:1.0.3'
+        classpath 'nz.co.trademe.includeme:includeme:1.0.4'
     }
 }
 

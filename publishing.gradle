@@ -25,12 +25,6 @@ artifacts {
     archives javadocJar
 }
 
-task sourceJar(type: Jar, dependsOn: 'classes') {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-
 group = project.ext.group
 
 afterEvaluate {
