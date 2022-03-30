@@ -8,7 +8,6 @@ ext.connection = 'scm:git:github.com/TradeMe/IncludeMe.git'
 ext.developerConnection = 'scm:git:ssh://github.com/TradeMe/IncludeMe.git'
 ext.url = 'https://github.com/TradeMe/IncludeMe'
 
-
 ext.bintray_version = '1.7.3'
 ext.kotlin_version = '1.5.0'
 ext.agp_version = "4.0.1"
